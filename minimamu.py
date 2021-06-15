@@ -121,7 +121,6 @@ for pair in itertools.combinations(lis, 2):
 		print(f"# 動画{pair[1]}")
 		print(df_crop[f'目の前には「エアコンの指示を承認する」ボタンがあります。このあとボタンを押しますか？{pair[1]}'].value_counts(normalize=True) * 100)
 
-
 # # 論文に挿入するための画像描画
 # FigureContinuousQuestionForMovie(df_crop, 'この後、動画内にある喋る空気清浄機の電源をつけたいですか？つけたくないですか？',
 #                                  ylabel = '受容度', indexlist = ['inverseアA', 'アB', 'inverseイA', 'イB'])
