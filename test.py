@@ -13,7 +13,7 @@ plt.rcParams['font.family'] = 'Hiragino Sans'
 ##############################################
 # Parameters
 ##############################################
-maxtime = 15 #アンケート回答時間の最大値 (分)
+maxtime = 20 #アンケート回答時間の最大値 (分)
 
 ##############################################
 # Functions
@@ -60,10 +60,10 @@ def FigureContinuousQuestionForMovie(df, colname, ylabel, indexlist = ['1', '2',
     plt.boxplot(list_data_permovie) # boxplot
     plt.ylim(ylim0, ylim1)
     plt.xticks(range(1, 5), ['公益行動条件', '公益通知条件', '私益行動条件', '私益通知条件'])
-    plt.hlines(height, sig0, sig1, linewidth = 0.7, color = 'black')
+    # plt.hlines(height, sig0, sig1, linewidth = 0.7, color = 'black')
 
-    if yticks:
-        plt.yticks(range(0, 11, 2), range(0, 11, 2))
+    # if yticks:
+        # plt.yticks(range(0, 11, 2), range(0, 11, 2))
 
     plt.ylabel(ylabel)
 
@@ -120,6 +120,22 @@ for pair in itertools.combinations(lis, 2):
 		print(df_crop[f'目の前には「エアコンの指示を承認する」ボタンがあります。このあとボタンを押しますか？{pair[0]}'].value_counts(normalize=True) * 100)
 		print(f"# 動画{pair[1]}")
 		print(df_crop[f'目の前には「エアコンの指示を承認する」ボタンがあります。このあとボタンを押しますか？{pair[1]}'].value_counts(normalize=True) * 100)
+	t_value, p_value = stats.ttest_ind(df_crop[f'動画内に登場した喋る家電の好感度を教えてください{pair[0]}'].to_numpy(), df_crop[f'動画内に登場した喋る家電の好感度を教えてください{pair[1]}'].to_numpy(), equal_var=True)
+	print("👍==好感度について==")
+	print("t_value:", t_value)
+	print("p_value:", p_value)
+	if p_value < 0.008:
+		print(f"p = {p_value:.3f} のため、帰無仮説が棄却されました。AとBに差があります")
+	else:
+		print(f"{p_value:.3f} のため、帰無仮説が採択されました。AとBに差はありません")
+	t_value, p_value = stats.ttest_ind(df_crop[f'動画内に登場した喋る家電の嫌悪感を教えてください{pair[0]}'].to_numpy(), df_crop[f'動画内に登場した喋る家電の嫌悪感を教えてください{pair[1]}'].to_numpy(), equal_var=True)
+	print("👎==嫌悪感について==")
+	print("t_value:", t_value)
+	print("p_value:", p_value)
+	if p_value < 0.025:
+		print(f"p = {p_value:.3f} のため、帰無仮説が棄却されました。AとBに差があります")
+	else:
+		print(f"{p_value:.3f} のため、帰無仮説が採択されました。AとBに差はありません")
 
 # # 論文に挿入するための画像描画
 # FigureContinuousQuestionForMovie(df_crop, 'この後、動画内にある喋る空気清浄機の電源をつけたいですか？つけたくないですか？',
